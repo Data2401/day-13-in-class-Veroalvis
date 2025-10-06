@@ -1,6 +1,6 @@
 ---
 title: "Join Lab"
-author: "Dr. Shoemaker"
+author: "Veronica Alviso"
 date: "DATA 2401"
 output: html_document
 ---
@@ -13,6 +13,9 @@ output: html_document
 We start by making some "healthcare" data: 
 
 ```{r}
+library(dplyr)
+library(tidyverse)
+
 # Patients table
 patients <- tibble(
   patient_id = c(1, 2, 3, 4),
@@ -48,6 +51,22 @@ Questions:
 - Find patients that haven't visited the hospital
 
 ```{r}
+patient_visit <- right_join(patients, visits)
+
+#Find all the names that have visited the hospital
+patient_visit %>% 
+  distinct(patient_id, .keep_all = TRUE) %>% 
+  filter(name != "NA") %>% 
+  select(name)
+
+# Show all patients visit information even if they haven't visited the hospital 
+
+patient_partial_info <- full_join(patients, visits)
+
+# List all the visits and patient information, even if there isn't information for the patient 
+patient_full_info <- full_join(patient_partial_info, doctors)
+
+patient_full_info
 
 ```
 
@@ -95,7 +114,7 @@ What is the average departure delay for each airline? To answer this with someth
 ```{r}
 
 
-````
+```
 
 Which airline had the smallest average departure delay? 
 
